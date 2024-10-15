@@ -8,8 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRoleRepository extends JpaRepository<Role, Long> {
+public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
 
 
-    List<Role> findByUserId(@Param("user_id") Long userId);
+    List<UserRole> findByUserId(@Param("user_id") Long userId);
 }

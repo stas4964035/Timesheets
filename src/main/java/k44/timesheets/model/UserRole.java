@@ -5,18 +5,18 @@ import lombok.Data;
 
 import java.util.List;
 
-//@Entity(name = "users_roles")
-//@Data
-//public class UserRole {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//    private Long id;
-//
-//    @Column(name="user_id")
-//    private Long userId;
-//
-//    @Column(name = "role_id")
-//    private List<Long> roleId;
-//
-//
-//}
+@Entity(name = "users_roles")
+@Data
+public class UserRole {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column(name="user_id")
+    private Long userId;
+
+    @Column(name = "role_name")
+    private String roleName;
+
+
+}

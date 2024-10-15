@@ -1,18 +1,15 @@
 package k44.timesheets.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
+public enum Role {
+    ADMIN("admin"), USER("user");
 
-@Entity(name="roles")
-@Data
-public class Role {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
-    @Column(name="role_name")
     private String name;
 
+    Role(String name) {
+        this.name = name;
+    }
 
+    public String getName() {
+        return name;
+    }
 }
