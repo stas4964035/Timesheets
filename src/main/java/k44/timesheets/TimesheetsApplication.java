@@ -1,11 +1,7 @@
 package k44.timesheets;
 
-import k44.timesheets.model.Employee;
-import k44.timesheets.model.Project;
-import k44.timesheets.model.Timesheet;
-import k44.timesheets.repository.EmployeeRepository;
-import k44.timesheets.repository.ProjectRepository;
-import k44.timesheets.repository.TimesheetRepository;
+import k44.timesheets.model.*;
+import k44.timesheets.repository.*;
 import org.hibernate.annotations.NotFound;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,6 +23,40 @@ public class TimesheetsApplication {
         ProjectRepository projectRepository = ctx.getBean(ProjectRepository.class);
         TimesheetRepository timesheetRepository = ctx.getBean(TimesheetRepository.class);
         EmployeeRepository employeeRepository = ctx.getBean(EmployeeRepository.class);
+        UsersRepository usersRepository = ctx.getBean(UsersRepository.class);
+
+        User admin = new User();
+        admin.setLogin("admin");
+        admin.setPassword("$2a$12$RdrR3Cg.y8iNy/tGtu8rB.8vMe0bD7UoK8o5S2GwHB0ndPS1p.wfe");
+
+        User user = new User();
+        user.setLogin("user");
+        user.setPassword("$2a$12$EameGBUS1kNai9bxbeFTYexeWD5HagLKtWhWIv/xHdoR0qroi/zKi");
+
+        User anon = new User();
+        anon.setLogin("anon");
+        anon.setPassword("$2a$12$47I56K/DvzAZeazTjbdi9.7/xMnbONxNVGpNvk131GZ6T8BL9ZL42");
+        usersRepository.save(anon);
+
+        admin = usersRepository.save(admin);
+        user = usersRepository.save(user);
+
+        UserRoleRepository roleRepository = ctx.getBean(UserRoleRepository.class);
+        UserRole adminAdminRole = new UserRole();
+        adminAdminRole.setUserId(admin.getId());
+        adminAdminRole.setRoleName(Role.ADMIN.getName());
+        roleRepository.save(adminAdminRole);
+
+        UserRole adminUserRole = new UserRole();
+        adminUserRole.setUserId(admin.getId());
+        adminUserRole.setRoleName(Role.USER.getName());
+        roleRepository.save(adminUserRole);
+
+        UserRole userUserRole = new UserRole();
+        userUserRole.setUserId(user.getId());
+        userUserRole.setRoleName(Role.USER.getName());
+        roleRepository.save(userUserRole);
+
 
         List<String> names = Arrays.asList("Ivan", "Petr", "Mike", "Alex", "Olga", "Anna", "Maria");
         for (int i = 0; i < 10; i++) {
