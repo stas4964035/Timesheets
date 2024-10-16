@@ -2,7 +2,6 @@ package k44.timesheets;
 
 import k44.timesheets.model.*;
 import k44.timesheets.repository.*;
-import org.hibernate.annotations.NotFound;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -25,37 +24,39 @@ public class TimesheetsApplication {
         EmployeeRepository employeeRepository = ctx.getBean(EmployeeRepository.class);
         UsersRepository usersRepository = ctx.getBean(UsersRepository.class);
 
+
+        RoleRepository roleRepository = ctx.getBean(RoleRepository.class);
+        Role adminRole = new Role();
+        adminRole.setName("admin");
+        adminRole = roleRepository.save(adminRole);
+        Role userRole = new Role();
+        userRole.setName("user");
+        userRole = roleRepository.save(userRole);
+        Role restRole = new Role();
+        restRole.setName("rest");
+        restRole = roleRepository.save(restRole);
+
+
         User admin = new User();
         admin.setLogin("admin");
         admin.setPassword("$2a$12$RdrR3Cg.y8iNy/tGtu8rB.8vMe0bD7UoK8o5S2GwHB0ndPS1p.wfe");
+        admin.setRoles(List.of(adminRole, userRole));
 
         User user = new User();
         user.setLogin("user");
         user.setPassword("$2a$12$EameGBUS1kNai9bxbeFTYexeWD5HagLKtWhWIv/xHdoR0qroi/zKi");
+        user.setRoles(List.of(userRole));
 
         User anon = new User();
         anon.setLogin("anon");
+        anon.setRoles(List.of(restRole));
         anon.setPassword("$2a$12$47I56K/DvzAZeazTjbdi9.7/xMnbONxNVGpNvk131GZ6T8BL9ZL42");
-        usersRepository.save(anon);
+
 
         admin = usersRepository.save(admin);
         user = usersRepository.save(user);
-
-        UserRoleRepository roleRepository = ctx.getBean(UserRoleRepository.class);
-        UserRole adminAdminRole = new UserRole();
-        adminAdminRole.setUserId(admin.getId());
-        adminAdminRole.setRoleName(Role.ADMIN.getName());
-        roleRepository.save(adminAdminRole);
-
-        UserRole adminUserRole = new UserRole();
-        adminUserRole.setUserId(admin.getId());
-        adminUserRole.setRoleName(Role.USER.getName());
-        roleRepository.save(adminUserRole);
-
-        UserRole userUserRole = new UserRole();
-        userUserRole.setUserId(user.getId());
-        userUserRole.setRoleName(Role.USER.getName());
-        roleRepository.save(userUserRole);
+        usersRepository.saveAll(List.of(admin, user));
+        usersRepository.save(anon);
 
 
         List<String> names = Arrays.asList("Ivan", "Petr", "Mike", "Alex", "Olga", "Anna", "Maria");
@@ -70,9 +71,9 @@ public class TimesheetsApplication {
             Project project = new Project();
             project.setName("Project " + i);
             do {
-                Employee employee = employeeRepository.findById(ThreadLocalRandom.current().nextLong(1,11))
+                Employee employee = employeeRepository.findById(ThreadLocalRandom.current().nextLong(1, 11))
                         .orElseThrow(NoSuchElementException::new);
-                if(!project.getEmployees().contains(employee)) {
+                if (!project.getEmployees().contains(employee)) {
                     project.getEmployees().add(employee);
                 }
             } while (ThreadLocalRandom.current().nextBoolean());

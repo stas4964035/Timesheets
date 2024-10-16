@@ -13,13 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/timesheets")
 @AllArgsConstructor
+
 public class TimesheetController {
 
     private final TimesheetService service;
 
     @GetMapping()
-    public ResponseEntity<List<Timesheet>> getTimesheets(@RequestParam(name="after", required = false) LocalDate after,
-                                                         @RequestParam(name="before", required = false) LocalDate before) {
+    public ResponseEntity<List<Timesheet>> getTimesheets(@RequestParam(name = "after", required = false) LocalDate after,
+                                                         @RequestParam(name = "before", required = false) LocalDate before) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getAllTimeSheets(after, before));
     }
 

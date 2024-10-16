@@ -18,4 +18,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "user_roles")
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
 }

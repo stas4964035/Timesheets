@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>All projects</h2>
+<ul>
+    <th:block th:each="pr : ${projects}">
+        <li>
+            <span th:text="${pr.getId()}"></span>&nbsp;
+            <span th:text="${pr.getName()}"></span>&nbsp;
+            <span th:text="${pr.getEmployees()}"></span>&nbsp;
+        </li>
+    </th:block>
+</ul>
+</body>
+</html>

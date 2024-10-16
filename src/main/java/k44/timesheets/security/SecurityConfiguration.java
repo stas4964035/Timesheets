@@ -3,6 +3,7 @@ package k44.timesheets.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
+@EnableGlobalAuthentication
 public class SecurityConfiguration {
 
     @Bean
@@ -20,8 +22,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/timesheets/**").hasAnyAuthority("user", "admin")
-                        .requestMatchers("/**").hasAuthority("admin")
+                        .requestMatchers("/home/timesheets/**").hasAnyAuthority("user", "admin")
+                        .requestMatchers("/home/projects/**").hasAnyAuthority("admin")
+                        .requestMatchers("/**").hasAuthority("rest")
                         .anyRequest().denyAll()
                 )
                 .formLogin(Customizer.withDefaults())
