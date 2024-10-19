@@ -1,5 +1,6 @@
 package k44.timesheets.controller;
 
+import k44.timesheets.aspect.Recover;
 import k44.timesheets.model.Project;
 import k44.timesheets.model.Timesheet;
 import k44.timesheets.service.ProjectService;
@@ -21,6 +22,7 @@ public class ProjectController {
     public List<Project> getAllProjects(){
         return service.getAllProjects();
     }
+
 
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable Long id){

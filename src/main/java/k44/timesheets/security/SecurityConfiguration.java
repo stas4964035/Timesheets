@@ -11,23 +11,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.RequestContextFilter;
 
 @Configuration
 @EnableGlobalAuthentication
 public class SecurityConfiguration {
 
+//    @Bean
+//    SecurityFilterChain filterChain(HttpSecurity http, RequestContextFilter requestContextFilter) throws Exception {
+//        return http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .cors(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(requests -> requests
+//                        .requestMatchers("/home/timesheets/**").hasAnyAuthority("user", "admin")
+//                        .requestMatchers("/home/projects/**").hasAnyAuthority("admin")
+//                        .requestMatchers("/**").hasAuthority("rest")
+//
+//                        .anyRequest().denyAll()
+//                )
+//
+//                .formLogin(Customizer.withDefaults())
+//                .build();
+//    }
+
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, RequestContextFilter requestContextFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/home/timesheets/**").hasAnyAuthority("user", "admin")
-                        .requestMatchers("/home/projects/**").hasAnyAuthority("admin")
-                        .requestMatchers("/**").hasAuthority("rest")
-                        .anyRequest().denyAll()
-                )
-                .formLogin(Customizer.withDefaults())
+                .authorizeHttpRequests(req -> req.anyRequest().permitAll())
                 .build();
     }
 
